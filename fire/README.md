@@ -1,11 +1,11 @@
 ```
 arch=`uname -m`
 kernel_path=$(pwd)"/hello-vmlinux.bin"
-rootfs_path=$(pwd)"/hello-rootfs.ext4"
+rootfs_path=$(pwd)"/rootfs.ext4"
 ```
 
 ```
-curl --unix-socket /tmp/firecracker.socket -i \                                                                                            INT ✘  system   21:21:23
+curl --unix-socket /tmp/firecracker.socket -i \
       -X PUT 'http://localhost/boot-source'   \
       -H 'Accept: application/json'           \
       -H 'Content-Type: application/json'     \
@@ -16,7 +16,7 @@ curl --unix-socket /tmp/firecracker.socket -i \                                 
 ```
 
 ```
-curl --unix-socket /tmp/firecracker.socket -i \                                                                                            INT ✘  system   21:21:52
+curl --unix-socket /tmp/firecracker.socket -i \
   -X PUT 'http://localhost/drives/rootfs' \
   -H 'Accept: application/json'           \
   -H 'Content-Type: application/json'     \
@@ -29,7 +29,7 @@ curl --unix-socket /tmp/firecracker.socket -i \                                 
 ```
 
 ```
-curl --unix-socket /tmp/firecracker.socket -i -X PUT 'http://localhost/actions' -H  'Accept: application/json' \                           INT ✘  system   21:22:08
+curl --unix-socket /tmp/firecracker.socket -i -X PUT 'http://localhost/actions' -H  'Accept: application/json' \
 -H  'Content-Type: application/json' -d'
 {
    "action_type": "InstanceStart"
