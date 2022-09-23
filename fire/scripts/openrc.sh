@@ -1,11 +1,11 @@
 #!/sbin/openrc-run
 
 name=$RC_SVCNAME
-description="CodeBench agent"
+description="firerunner agent"
 supervisor="supervise-daemon"
 command="/usr/local/bin/fire"
 pidfile="/run/fire.pid"
-command_user="codebench:codebench"
+command_user="firerunner:firerunner"
 
 depend() {
 	after net

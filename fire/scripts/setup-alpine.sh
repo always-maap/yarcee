@@ -14,7 +14,7 @@ echo "root:root" | chpasswd
 
 echo "nameserver 1.1.1.1" >>/etc/resolv.conf
 
-addgroup -g 1000 -S fire && adduser -u 1000 -S fire -G fire
+addgroup -g 1000 -S firerunner && adduser -u 1000 -S firerunner -G firerunner
 
 rc-update add devfs boot
 rc-update add procfs boot
@@ -26,5 +26,5 @@ for d in bin etc lib root sbin usr; do tar c "/$d" | tar x -C /my-rootfs; done
 for dir in dev proc run sys var tmp; do mkdir /my-rootfs/${dir}; done
 
 chmod 1777 /my-rootfs/tmp
-mkdir -p /my-rootfs/home/fire/
-chown 1000:1000 /my-rootfs/home/fire/
+mkdir -p /my-rootfs/home/firerunner/
+chown 1000:1000 /my-rootfs/home/firerunner/

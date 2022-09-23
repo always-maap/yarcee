@@ -6,7 +6,7 @@ mount rootfs.ext4 /tmp/my-rootfs
 docker run -i --rm \
     -v /tmp/my-rootfs:/my-rootfs \
     -v "$(pwd)/fire:/usr/local/bin/fire" \
-    -v "$(pwd)/openrc-service.sh:/etc/init.d/fire" \
+    -v "$(pwd)/openrc.sh:/etc/init.d/fire" \
     --net=host \
     alpine sh < setup-alpine.sh
 
