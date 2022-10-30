@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/gofiber/swagger"
+	_ "api/docs"
+	"log"
 
-	_ "github.com/always-maap/yarcee/api/docs"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
+	"github.com/joho/godotenv"
 )
 
 // @title          Fiber Example API
@@ -18,13 +20,17 @@ import (
 // @host           localhost:3000
 // @BasePath       /
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	app := fiber.New()
 
-	app.Get("/swagger/*", swagger.HandlerDefault) // default
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	app.Get("/health_check", healthCheckController)
 
-	app.Listen(":3000")
+	app.Get("/questions", allQuestions)
+
+	app.Listen(":8082")
 }
