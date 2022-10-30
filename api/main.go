@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gofiber/swagger"
 
-	_ "github.com/alawys-maap/yarcee/api/docs"
+	_ "github.com/always-maap/yarcee/api/docs"
 	"github.com/gofiber/fiber/v2"
 )
 
