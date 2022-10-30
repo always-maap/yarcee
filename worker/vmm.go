@@ -60,6 +60,8 @@ func createAndStartVmm(ctx context.Context) (*runningFirecracker, error) {
 		return nil, fmt.Errorf("failed starting machine: %s", err)
 	}
 
+	logger.Printf("Starting VMM with ID %s", &machine.Cfg.NetworkInterfaces[0].StaticConfiguration.IPConfiguration.IPAddr)
+
 	return &runningFirecracker{
 		vmmCancel: vmmCancel,
 		ip:        machine.Cfg.NetworkInterfaces[0].StaticConfiguration.IPConfiguration.IPAddr.IP,
