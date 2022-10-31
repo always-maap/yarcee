@@ -1,11 +1,13 @@
 package main
 
 import (
+	"api/database"
 	_ "api/docs"
+	"api/routes"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -24,13 +26,14 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	database.Connect()
+
 	app := fiber.New()
 
-	app.Get("/swagger/*", swagger.HandlerDefault)
+	app.Use(cors.New(cors.Config{AllowCredentials: true}))
 
-	app.Get("/health_check", healthCheckController)
-
-	app.Get("/questions", allQuestions)
+	routes.Setup(app)
 
 	app.Listen(":8082")
 }

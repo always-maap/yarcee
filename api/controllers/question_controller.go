@@ -1,4 +1,4 @@
-package main
+package controllers
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func allQuestions(c *fiber.Ctx) error {
+func AllQuestions(c *fiber.Ctx) error {
 	ctx := context.Background()
 
 	ts := oauth2.StaticTokenSource(
