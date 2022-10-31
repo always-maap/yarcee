@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  apidb:
+    container_name: apidb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=yarcee
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    image:
+      postgres
+
+  pgadmin:
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=mohammadali.ap.2000@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/root/.pgadmin
+    image: dpage/pgadmin4
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
