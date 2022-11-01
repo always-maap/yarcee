@@ -1,3 +1,9 @@
+import QuestionList from "./QuestionList";
+
 export default function Home() {
-  return <div>hi</div>;
+  return (
+    <div>
+      <QuestionList />
+    </div>
+  );
 }
