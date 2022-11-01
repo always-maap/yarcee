@@ -8,4 +8,5 @@ import (
 
 func QuestionSetup(v1 fiber.Router) {
 	v1.Get("/questions", controllers.GetAllQuestion)
+	v1.Get("/questions/:id", controllers.GetQuestion)
 }

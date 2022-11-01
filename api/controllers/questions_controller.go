@@ -20,3 +20,10 @@ func GetAllQuestion(c *fiber.Ctx) error {
 	database.DB.Model(&models.Question{}).Find(&questions)
 	return c.JSON(questions)
 }
+
+func GetQuestion(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var question models.Question
+	database.DB.Model(&models.Question{}).Where("id = ?", id).First(&question)
+	return c.JSON(question)
+}
