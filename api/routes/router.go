@@ -16,8 +16,6 @@ func Setup(app *fiber.App) {
 
 	app.Get("/health_check", controllers.HealthController)
 
-	app.Get("/questions", controllers.AllQuestions)
-
 	app.Post("/sign-up", controllers.SignUpController)
 	app.Post("/sign-in", controllers.SignInController)
 	app.Get("/sign-out", controllers.SignOutController)
