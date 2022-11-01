@@ -2,7 +2,6 @@ package routes
 
 import (
 	"api/controllers"
-	"api/database"
 
 	"github.com/gofiber/swagger"
 
@@ -10,14 +9,15 @@ import (
 )
 
 func Setup(app *fiber.App) {
-	database.Connect()
-
 	app.Get("/swagger/*", swagger.HandlerDefault)
+
+	api := app.Group("/api")
+
+	v1 := api.Group("/v1")
 
 	app.Get("/health_check", controllers.HealthController)
 
-	app.Post("/sign-up", controllers.SignUpController)
-	app.Post("/sign-in", controllers.SignInController)
-	app.Get("/sign-out", controllers.SignOutController)
-	app.Get("/user", controllers.RetrieveUserController)
+	QuestionSetup(v1)
+
+	AuthSetup(v1)
 }
