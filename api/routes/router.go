@@ -17,7 +17,5 @@ func Setup(app *fiber.App) {
 
 	app.Get("/health_check", controllers.HealthController)
 
-	QuestionSetup(v1)
-
 	AuthSetup(v1)
 }
