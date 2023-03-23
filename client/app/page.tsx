@@ -1,9 +1,3 @@
-import QuestionList from "./QuestionList";
-
 export default function Home() {
-  return (
-    <div>
-      <QuestionList />
-    </div>
-  );
+  return <main className="text-3xl font-bold underline">HIII</main>;
 }

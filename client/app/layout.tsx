@@ -1,15 +1,13 @@
-import "./globals.css";
+import './globals.css';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const metadata = {
+  title: 'yarcee',
+  description: 'yet another remote code execution engine',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <title>Next.js</title>
-      </head>
       <body>{children}</body>
     </html>
   );
