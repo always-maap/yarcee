@@ -5,3 +5,9 @@
 :root {
   --nav-height: 57px;
 }
+
+@layer components {
+  .btn-primary {
+    @apply bg-lime-200 hover:bg-lime-100 text-neutral-700 py-2 px-4 rounded;
+  }
+}

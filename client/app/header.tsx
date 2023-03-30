@@ -11,8 +11,14 @@ export default function Header() {
             <Logo />
           </Link>
           <ul className="flex gap-6 text-neutral-400">
-            <li className="text-xs">Sign In</li>
-            <li className="text-xs">Try for free</li>
+            <li className="text-xs">
+              <Link href="signin">Sign In</Link>
+            </li>
+            <li className="text-xs">
+              <Link href="/signup" className="btn-primary">
+                Try for free
+              </Link>
+            </li>
           </ul>
         </div>
       </Container>
