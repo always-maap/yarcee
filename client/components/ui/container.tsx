@@ -5,7 +5,7 @@ type Props = {} & HTMLAttributes<HTMLDivElement>;
 
 export default function Container(props: Props) {
   return (
-    <div {...props} className={(props.className, 'mx-auto max-w-[1234px]')}>
+    <div {...props} className={clsx(props.className, 'mx-auto max-w-[1234px]')}>
       {props.children}
     </div>
   );
