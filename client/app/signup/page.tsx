@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from '@/components/logo';
+import YARCEE from '@/components/yarcee';
 import Button from '@/components/ui/button';
 import Label from '@/components/ui/label';
 import TextInput from '@/components/ui/text-input';
@@ -22,7 +22,7 @@ export default function SignUp() {
   return (
     <div className="h-full flex flex-col justify-between items-center py-12">
       <Link href="/">
-        <Logo width={48} height={48} />
+        <YARCEE width={48} height={48} />
       </Link>
       <form className="flex flex-col space-y-8" onSubmit={handleSubmit(onSubmit)}>
         <div>

@@ -10,16 +10,7 @@ export default function Header() {
           <Link href="/">
             <YARCEE />
           </Link>
-          <ul className="flex gap-6 text-neutral-400">
-            <li className="text-xs">
-              <Link href="signin">Sign In</Link>
-            </li>
-            <li className="text-xs">
-              <Link href="/signup" className="btn-primary">
-                Try for free
-              </Link>
-            </li>
-          </ul>
+          <Link href="signin">Sign out</Link>
         </div>
       </Container>
     </header>

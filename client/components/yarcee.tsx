@@ -2,7 +2,7 @@ import { SVGAttributes } from 'react';
 
 type Props = {} & SVGAttributes<HTMLOrSVGElement>;
 
-export default function Logo(props: Props) {
+export default function YARCEE(props: Props) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g clipPath="url(#clip0_1_2)">
