@@ -1,0 +1,7 @@
+.ResizeHandleOuter[data-resize-handle-active] {
+  @apply bg-lime-300;
+}
+
+.ResizeHandleOuter:hover {
+  @apply bg-lime-300;
+}
