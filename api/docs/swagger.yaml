@@ -1,4 +1,90 @@
+basePath: /
+definitions:
+  controllers.signInBody:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controllers.signUpBody:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8082
 info:
   contact: {}
-paths: {}
+  description: YARCEE API swagger documentation
+  title: YARCEE API
+  version: "1.0"
+paths:
+  /api/sign-in/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.signInBody'
+      produces:
+      - application/json
+      responses: {}
+      summary: Sign in
+      tags:
+      - Auth
+  /api/sign-out/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Sign out
+      tags:
+      - Auth
+  /api/sign-up/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.signUpBody'
+      produces:
+      - application/json
+      responses: {}
+      summary: Sign up
+      tags:
+      - Auth
+  /api/user/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: User auth details
+      tags:
+      - Auth
+  /health_check/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Health check
+      tags:
+      - Health check
 swagger: "2.0"

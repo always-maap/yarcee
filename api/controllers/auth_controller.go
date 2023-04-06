@@ -10,17 +10,29 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type signUpBody struct {
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+// @Summary      Sign up
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param request body signUpBody true "query params"
+// @Router       /api/sign-up/ [post]
 func SignUpController(c *fiber.Ctx) error {
-	var data map[string]string
+	var data = new(signUpBody)
 
 	if err := c.BodyParser(&data); err != nil {
 		return err
 	}
 
-	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+	password, _ := bcrypt.GenerateFromPassword([]byte(data.Password), 14)
 	user := models.User{
-		Name:     data["name"],
-		Username: data["username"],
+		Name:     data.Name,
+		Username: data.Username,
 		Password: password,
 	}
 
@@ -30,6 +42,17 @@ func SignUpController(c *fiber.Ctx) error {
 
 }
 
+type signInBody struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+// @Summary      Sign in
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param request body signInBody true "query params"
+// @Router       /api/sign-in/ [post]
 func SignInController(c *fiber.Ctx) error {
 	var data map[string]string
 
@@ -83,6 +106,11 @@ func SignInController(c *fiber.Ctx) error {
 	})
 }
 
+// @Summary      Sign out
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Router       /api/sign-out/ [get]
 func SignOutController(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
 		Name:     "jwt",
@@ -98,6 +126,11 @@ func SignOutController(c *fiber.Ctx) error {
 	})
 }
 
+// @Summary      User auth details
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Router       /api/user/ [get]
 func RetrieveUserController(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 

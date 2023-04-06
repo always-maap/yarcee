@@ -1,7 +1,137 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "YARCEE API swagger documentation",
+        "title": "YARCEE API",
+        "contact": {},
+        "version": "1.0"
     },
-    "paths": {}
+    "host": "localhost:8082",
+    "basePath": "/",
+    "paths": {
+        "/api/sign-in/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Sign in",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.signInBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/sign-out/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Sign out",
+                "responses": {}
+            }
+        },
+        "/api/sign-up/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Sign up",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.signUpBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User auth details",
+                "responses": {}
+            }
+        },
+        "/health_check/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health check"
+                ],
+                "summary": "Health check",
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "controllers.signInBody": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.signUpBody": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

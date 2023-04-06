@@ -13,9 +13,7 @@ func Setup(app *fiber.App) {
 
 	api := app.Group("/api")
 
-	v1 := api.Group("/v1")
-
 	app.Get("/health_check", controllers.HealthController)
 
-	AuthSetup(v1)
+	AuthSetup(api)
 }

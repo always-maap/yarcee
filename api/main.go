@@ -11,15 +11,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title          Fiber Example API
+// @title          YARCEE API
 // @version        1.0
-// @description    This is a sample swagger for Fiber
-// @termsOfService http://swagger.io/terms/
-// @contact.name   API Support
-// @contact.email  fiber@swagger.io
-// @license.name   Apache 2.0
-// @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
-// @host           localhost:3000
+// @description    YARCEE API swagger documentation
+// @host           localhost:8082
 // @BasePath       /
 func main() {
 	err := godotenv.Load()
