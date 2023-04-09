@@ -10,6 +10,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func hashPassword(password string) ([]byte, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return bytes, err
+}
+
+func checkPasswordHash(password string, hash []byte) bool {
+	err := bcrypt.CompareHashAndPassword(hash, []byte(password))
+	return err == nil
+}
+
 type signUpBody struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
@@ -29,7 +39,7 @@ func SignUpController(c *fiber.Ctx) error {
 		return err
 	}
 
-	password, _ := bcrypt.GenerateFromPassword([]byte(data.Password), 14)
+	password, _ := hashPassword(data.Password)
 	user := models.User{
 		Name:     data.Name,
 		Username: data.Username,
@@ -54,7 +64,7 @@ type signInBody struct {
 // @Param request body signInBody true "query params"
 // @Router       /api/sign-in/ [post]
 func SignInController(c *fiber.Ctx) error {
-	var data map[string]string
+	var data = new(signInBody)
 
 	if err := c.BodyParser(&data); err != nil {
 		return err
@@ -62,7 +72,7 @@ func SignInController(c *fiber.Ctx) error {
 
 	var user models.User
 
-	database.DB.Where("username = ?", data["username"]).First(&user)
+	database.DB.Where("username = ?", data.Username).First(&user)
 
 	if user.Id == 0 {
 		c.Status(fiber.StatusNotFound)
@@ -71,7 +81,7 @@ func SignInController(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(data["password"])); err != nil {
+	if !checkPasswordHash(data.Password, user.Password) {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"message": "Incorrect username or password",
@@ -92,37 +102,9 @@ func SignInController(c *fiber.Ctx) error {
 		})
 	}
 
-	cookie := fiber.Cookie{
-		Name:     "jwt",
-		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 24),
-		HTTPOnly: true,
-	}
-
-	c.Cookie(&cookie)
-
 	return c.JSON(fiber.Map{
 		"message": "success",
-	})
-}
-
-// @Summary      Sign out
-// @Tags         Auth
-// @Accept       json
-// @Produce      json
-// @Router       /api/sign-out/ [get]
-func SignOutController(c *fiber.Ctx) error {
-	cookie := fiber.Cookie{
-		Name:     "jwt",
-		Value:    "",
-		Expires:  time.Now().Add(-time.Hour),
-		HTTPOnly: true,
-	}
-
-	c.Cookie(&cookie)
-
-	return c.JSON(fiber.Map{
-		"message": "success",
+		"data":    token,
 	})
 }
 

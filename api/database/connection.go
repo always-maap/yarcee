@@ -9,11 +9,20 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var (
+	DB *gorm.DB
+)
 
 func Connect() {
-	dbURL := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s",
-		os.Getenv("DB_HOST"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"))
+	var (
+		host     = os.Getenv("DB_HOST")
+		user     = os.Getenv("DB_USER")
+		password = os.Getenv("DB_PASSWORD")
+		db       = os.Getenv("DB_NAME")
+		port     = os.Getenv("DB_PORT")
+	)
+
+	dbURL := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", host, user, password, db, port)
 
 	connection, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 
