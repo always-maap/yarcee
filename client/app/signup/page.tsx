@@ -6,17 +6,19 @@ import Label from '@/components/ui/label';
 import TextInput from '@/components/ui/text-input';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { signUp } from '@/api/auth/sign-up';
 
 type Inputs = {
-  email: string;
+  name: string;
+  username: string;
   password: string;
 };
 
 export default function SignUp() {
   const { register, handleSubmit } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await signUp({ name: data.name, username: data.username, password: data.password });
   };
 
   return (
@@ -30,14 +32,12 @@ export default function SignUp() {
           <span>Login or register to start building your projects today.</span>
         </div>
         <div>
-          <Label htmlFor="email">Email</Label>
-          <TextInput
-            {...register('email')}
-            type="email"
-            id="email"
-            placeholder="example@domain.com"
-            required
-          />
+          <Label htmlFor="name">Name</Label>
+          <TextInput {...register('name')} id="name" placeholder="Mr.example" required />
+          <Label htmlFor="username" className="mt-4">
+            Username
+          </Label>
+          <TextInput {...register('username')} id="username" placeholder="example" required />
           <Label htmlFor="password" className="mt-4">
             Password
           </Label>
