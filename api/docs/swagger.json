@@ -7,7 +7,6 @@
         "version": "1.0"
     },
     "host": "localhost:8082",
-    "basePath": "/",
     "paths": {
         "/api/sign-in/": {
             "post": {
@@ -32,21 +31,6 @@
                         }
                     }
                 ],
-                "responses": {}
-            }
-        },
-        "/api/sign-out/": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Sign out",
                 "responses": {}
             }
         },
@@ -78,6 +62,11 @@
         },
         "/api/user/": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -132,6 +121,14 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

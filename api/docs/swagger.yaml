@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   controllers.signInBody:
     properties:
@@ -40,16 +39,6 @@ paths:
       summary: Sign in
       tags:
       - Auth
-  /api/sign-out/:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses: {}
-      summary: Sign out
-      tags:
-      - Auth
   /api/sign-up/:
     post:
       consumes:
@@ -74,6 +63,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - Bearer: []
       summary: User auth details
       tags:
       - Auth
@@ -87,4 +78,10 @@ paths:
       summary: Health check
       tags:
       - Health check
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

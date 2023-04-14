@@ -15,6 +15,11 @@ import (
 // @version        1.0
 // @description    YARCEE API swagger documentation
 // @host           localhost:8082
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
+//
 // @BasePath       /
 func main() {
 	err := godotenv.Load()

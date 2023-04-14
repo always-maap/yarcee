@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"api/database"
+	"api/helper"
 	"api/models"
 	"time"
 
@@ -112,26 +113,17 @@ func SignInController(c *fiber.Ctx) error {
 // @Tags         Auth
 // @Accept       json
 // @Produce      json
+// @Security Bearer
 // @Router       /api/user/ [get]
 func RetrieveUserController(c *fiber.Ctx) error {
-	cookie := c.Cookies("jwt")
-
-	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secret"), nil
-	})
+	user, err := helper.RetrieveUser(c.UserContext())
 
 	if err != nil {
-		c.Status(fiber.StatusUnauthorized)
+		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
-			"message": "Unauthenticated",
+			"message": err.Error(),
 		})
 	}
-
-	claims := token.Claims.(*jwt.StandardClaims)
-
-	var user models.User
-
-	database.DB.Where("username = ?", claims.Issuer).First(&user)
 
 	return c.JSON(user)
 }
