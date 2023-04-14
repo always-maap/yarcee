@@ -7,6 +7,7 @@ import TextInput from '@/components/ui/text-input';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signIn } from '@/api/auth/sign-in';
+import Cookies from 'js-cookie';
 
 type Inputs = {
   username: string;
@@ -17,7 +18,8 @@ export default function SignIn() {
   const { register, handleSubmit } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await signIn({ username: data.username, password: data.password });
+    const resp = await signIn({ username: data.username, password: data.password });
+    Cookies.set('jwt-token', resp.data);
   };
 
   return (

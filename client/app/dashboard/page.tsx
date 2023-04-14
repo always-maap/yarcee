@@ -1,8 +1,12 @@
+'use client';
+
 import Container from '@/components/ui/container';
 import Header from './header';
 import ProjectCard from './project-card';
 import Nodejs from '@/components/nodejs';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { retrieveUser } from '@/api/user/retrieve-user';
 
 const TEMPLATES = [
   { name: 'Node.js', icon: <Nodejs /> },
@@ -10,6 +14,13 @@ const TEMPLATES = [
 ];
 
 export default function Dashboard() {
+  useEffect(() => {
+    (async () => {
+      const resp = await retrieveUser();
+      console.log(resp);
+    })();
+  }, []);
+
   return (
     <>
       <Header />
