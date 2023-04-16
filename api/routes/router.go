@@ -16,4 +16,5 @@ func Setup(app *fiber.App) {
 	app.Get("/health_check", controllers.HealthController)
 
 	AuthSetup(api)
+	SandboxSetup(api)
 }
