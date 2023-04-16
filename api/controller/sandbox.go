@@ -1,9 +1,9 @@
-package controllers
+package controller
 
 import (
 	"api/database"
 	"api/helper"
-	"api/models"
+	"api/model"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -18,7 +18,7 @@ func GetUserSandboxes(c *fiber.Ctx) error {
 		})
 	}
 
-	var sandboxes []models.Sandbox
+	var sandboxes []model.Sandbox
 	database.DB.Where("user_refer = ?", user.Id).Find(&sandboxes)
 
 	return c.JSON(fiber.Map{
@@ -56,7 +56,7 @@ func CreateSandBox(c *fiber.Ctx) error {
 		})
 	}
 
-	sandbox := models.Sandbox{
+	sandbox := model.Sandbox{
 		Name:      data.Name,
 		Language:  data.Language,
 		Code:      data.Code,

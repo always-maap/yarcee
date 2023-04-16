@@ -1,9 +1,9 @@
-package controllers
+package controller
 
 import (
 	"api/database"
 	"api/helper"
-	"api/models"
+	"api/model"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -41,7 +41,7 @@ func SignUpController(c *fiber.Ctx) error {
 	}
 
 	password, _ := hashPassword(data.Password)
-	user := models.User{
+	user := model.User{
 		Name:     data.Name,
 		Username: data.Username,
 		Password: password,
@@ -71,7 +71,7 @@ func SignInController(c *fiber.Ctx) error {
 		return err
 	}
 
-	var user models.User
+	var user model.User
 
 	database.DB.Where("username = ?", data.Username).First(&user)
 

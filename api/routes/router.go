@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"api/controllers"
+	"api/controller"
 
 	"github.com/gofiber/swagger"
 
@@ -13,7 +13,7 @@ func Setup(app *fiber.App) {
 
 	api := app.Group("/api")
 
-	app.Get("/health_check", controllers.HealthController)
+	app.Get("/health_check", controller.HealthController)
 
 	AuthSetup(api)
 	SandboxSetup(api)

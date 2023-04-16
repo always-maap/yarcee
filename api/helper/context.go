@@ -1,16 +1,16 @@
 package helper
 
 import (
-	"api/models"
+	"api/model"
 	"context"
 	"errors"
 )
 
-func RetrieveUser(c context.Context) (models.User, error) {
-	user, ok := c.Value("user").(models.User)
+func RetrieveUser(c context.Context) (model.User, error) {
+	user, ok := c.Value("user").(model.User)
 
 	if !ok {
-		return models.User{}, errors.New("could not cast user")
+		return model.User{}, errors.New("could not cast user")
 	}
 
 	return user, nil

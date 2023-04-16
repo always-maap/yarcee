@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"api/database"
-	"api/models"
+	"api/model"
 	"context"
 	"os"
 	"strings"
@@ -44,7 +44,7 @@ func jwtSuccess(c *fiber.Ctx) error {
 
 	claims := token.Claims.(*jwt.StandardClaims)
 
-	var user models.User
+	var user model.User
 
 	database.DB.Where("username = ?", claims.Issuer).First(&user)
 

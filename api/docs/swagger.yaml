@@ -1,4 +1,13 @@
 definitions:
+  controllers.createSandboxBody:
+    properties:
+      code:
+        type: string
+      language:
+        type: string
+      name:
+        type: string
+    type: object
   controllers.signInBody:
     properties:
       password:
@@ -22,6 +31,23 @@ info:
   title: YARCEE API
   version: "1.0"
 paths:
+  /api/sandbox/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createSandboxBody'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create sandbox
+      tags:
+      - sandbox
   /api/sign-in/:
     post:
       consumes:

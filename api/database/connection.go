@@ -1,7 +1,7 @@
 package database
 
 import (
-	"api/models"
+	"api/model"
 	"fmt"
 	"os"
 
@@ -32,5 +32,5 @@ func Connect() {
 
 	DB = connection
 
-	connection.AutoMigrate(&models.User{}, &models.Sandbox{})
+	connection.AutoMigrate(&model.User{}, &model.Sandbox{})
 }

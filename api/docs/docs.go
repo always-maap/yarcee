@@ -16,6 +16,32 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/sandbox/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sandbox"
+                ],
+                "summary": "Create sandbox",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.createSandboxBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/api/sign-in/": {
             "post": {
                 "consumes": [
@@ -105,6 +131,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.createSandboxBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.signInBody": {
             "type": "object",
             "properties": {
