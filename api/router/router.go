@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"api/controller"
@@ -17,4 +17,5 @@ func Setup(app *fiber.App) {
 
 	AuthSetup(api)
 	SandboxSetup(api)
+	UserSetup(api)
 }

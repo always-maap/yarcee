@@ -2,7 +2,6 @@ package controller
 
 import (
 	"api/database"
-	"api/helper"
 	"api/model"
 	"time"
 
@@ -107,23 +106,4 @@ func SignInController(c *fiber.Ctx) error {
 		"message": "success",
 		"data":    token,
 	})
-}
-
-// @Summary      User auth details
-// @Tags         Auth
-// @Accept       json
-// @Produce      json
-// @Security Bearer
-// @Router       /api/user/ [get]
-func RetrieveUserController(c *fiber.Ctx) error {
-	user, err := helper.RetrieveUser(c.UserContext())
-
-	if err != nil {
-		c.Status(fiber.StatusInternalServerError)
-		return c.JSON(fiber.Map{
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(user)
 }

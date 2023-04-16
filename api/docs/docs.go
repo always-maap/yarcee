@@ -17,6 +17,19 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/sandbox/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sandbox"
+                ],
+                "summary": "Get user sandboxes",
+                "responses": {}
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -25,7 +38,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "sandbox"
+                    "Sandbox"
                 ],
                 "summary": "Create sandbox",
                 "parameters": [
@@ -35,7 +48,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.createSandboxBody"
+                            "$ref": "#/definitions/controller.createSandboxBody"
                         }
                     }
                 ],
@@ -61,7 +74,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.signInBody"
+                            "$ref": "#/definitions/controller.signInBody"
                         }
                     }
                 ],
@@ -87,7 +100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.signUpBody"
+                            "$ref": "#/definitions/controller.signUpBody"
                         }
                     }
                 ],
@@ -108,7 +121,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "User"
                 ],
                 "summary": "User auth details",
                 "responses": {}
@@ -131,7 +144,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controllers.createSandboxBody": {
+        "controller.createSandboxBody": {
             "type": "object",
             "properties": {
                 "code": {
@@ -145,7 +158,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.signInBody": {
+        "controller.signInBody": {
             "type": "object",
             "properties": {
                 "password": {
@@ -156,7 +169,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.signUpBody": {
+        "controller.signUpBody": {
             "type": "object",
             "properties": {
                 "name": {

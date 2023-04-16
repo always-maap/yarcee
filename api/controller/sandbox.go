@@ -8,6 +8,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// @Summary      Get user sandboxes
+// @Tags         Sandbox
+// @Accept       json
+// @Produce      json
+// @Router       /api/sandbox/ [get]
 func GetUserSandboxes(c *fiber.Ctx) error {
 	user, err := helper.RetrieveUser(c.UserContext())
 
@@ -35,7 +40,7 @@ type createSandboxBody struct {
 }
 
 // @Summary      Create sandbox
-// @Tags         sandbox
+// @Tags         Sandbox
 // @Accept       json
 // @Produce      json
 // @Param request body createSandboxBody true "query params"

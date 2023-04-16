@@ -3,7 +3,7 @@ package main
 import (
 	"api/database"
 	_ "api/docs"
-	"api/routes"
+	"api/router"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,7 +33,7 @@ func main() {
 
 	app.Use(cors.New())
 
-	routes.Setup(app)
+	router.Setup(app)
 
 	app.Listen(":8082")
 }

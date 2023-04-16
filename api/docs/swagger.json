@@ -9,6 +9,19 @@
     "host": "localhost:8082",
     "paths": {
         "/api/sandbox/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sandbox"
+                ],
+                "summary": "Get user sandboxes",
+                "responses": {}
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -17,7 +30,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "sandbox"
+                    "Sandbox"
                 ],
                 "summary": "Create sandbox",
                 "parameters": [
@@ -27,7 +40,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.createSandboxBody"
+                            "$ref": "#/definitions/controller.createSandboxBody"
                         }
                     }
                 ],
@@ -53,7 +66,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.signInBody"
+                            "$ref": "#/definitions/controller.signInBody"
                         }
                     }
                 ],
@@ -79,7 +92,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.signUpBody"
+                            "$ref": "#/definitions/controller.signUpBody"
                         }
                     }
                 ],
@@ -100,7 +113,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "User"
                 ],
                 "summary": "User auth details",
                 "responses": {}
@@ -123,7 +136,7 @@
         }
     },
     "definitions": {
-        "controllers.createSandboxBody": {
+        "controller.createSandboxBody": {
             "type": "object",
             "properties": {
                 "code": {
@@ -137,7 +150,7 @@
                 }
             }
         },
-        "controllers.signInBody": {
+        "controller.signInBody": {
             "type": "object",
             "properties": {
                 "password": {
@@ -148,7 +161,7 @@
                 }
             }
         },
-        "controllers.signUpBody": {
+        "controller.signUpBody": {
             "type": "object",
             "properties": {
                 "name": {

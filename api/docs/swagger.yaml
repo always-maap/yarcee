@@ -1,5 +1,5 @@
 definitions:
-  controllers.createSandboxBody:
+  controller.createSandboxBody:
     properties:
       code:
         type: string
@@ -8,14 +8,14 @@ definitions:
       name:
         type: string
     type: object
-  controllers.signInBody:
+  controller.signInBody:
     properties:
       password:
         type: string
       username:
         type: string
     type: object
-  controllers.signUpBody:
+  controller.signUpBody:
     properties:
       name:
         type: string
@@ -32,6 +32,15 @@ info:
   version: "1.0"
 paths:
   /api/sandbox/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Get user sandboxes
+      tags:
+      - Sandbox
     post:
       consumes:
       - application/json
@@ -41,13 +50,13 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controllers.createSandboxBody'
+          $ref: '#/definitions/controller.createSandboxBody'
       produces:
       - application/json
       responses: {}
       summary: Create sandbox
       tags:
-      - sandbox
+      - Sandbox
   /api/sign-in/:
     post:
       consumes:
@@ -58,7 +67,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controllers.signInBody'
+          $ref: '#/definitions/controller.signInBody'
       produces:
       - application/json
       responses: {}
@@ -75,7 +84,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controllers.signUpBody'
+          $ref: '#/definitions/controller.signUpBody'
       produces:
       - application/json
       responses: {}
@@ -93,7 +102,7 @@ paths:
       - Bearer: []
       summary: User auth details
       tags:
-      - Auth
+      - User
   /health_check/:
     get:
       consumes:
