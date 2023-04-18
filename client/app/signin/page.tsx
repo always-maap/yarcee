@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signIn } from '@/api/auth/sign-in';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 type Inputs = {
   username: string;
@@ -16,10 +17,12 @@ type Inputs = {
 
 export default function SignIn() {
   const { register, handleSubmit } = useForm<Inputs>();
+  const { push } = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const resp = await signIn({ username: data.username, password: data.password });
     Cookies.set('jwt-token', resp.data);
+    await push('/dashboard');
   };
 
   return (

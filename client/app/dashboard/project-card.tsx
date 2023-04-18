@@ -9,8 +9,8 @@ type Props = {
 
 export default function ProjectCard(props: Props) {
   return (
-    <div className="bg-neutral-800 hover:bg-neutral-700 p-6 flex flex-col justify-between h-full">
-      <div>
+    <div className="bg-neutral-800 hover:bg-neutral-700 p-6 flex flex-col justify-between h-full rounded">
+      <div className="flex justify-between items-center">
         {props.icon} {props.actions}
       </div>
       <div>

@@ -1,8 +1,17 @@
+'use client';
+
 import YARCEE from '@/components/yarcee';
 import Container from '@/components/ui/container';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+import { mutate } from 'swr';
 
 export default function Header() {
+  function onSignOut() {
+    Cookies.remove('jwt-token');
+    mutate('/user');
+  }
+
   return (
     <header className="border-b border-b-neutral-600 py-4" style={{ height: 'var(--nav-height)' }}>
       <Container>
@@ -10,7 +19,9 @@ export default function Header() {
           <Link href="/">
             <YARCEE />
           </Link>
-          <Link href="signin">Sign out</Link>
+          <button className="text-xs text-neutral-400" onClick={onSignOut}>
+            Sign out
+          </button>
         </div>
       </Container>
     </header>
