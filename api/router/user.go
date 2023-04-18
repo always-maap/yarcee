@@ -8,5 +8,5 @@ import (
 )
 
 func UserSetup(api fiber.Router) {
-	api.Post("/user", middleware.Protected(), controller.RetrieveUserController)
+	api.Get("/user", middleware.Protected(), controller.RetrieveUserController)
 }

@@ -30,6 +30,30 @@ const docTemplate = `{
                 "summary": "Get user sandboxes",
                 "responses": {}
             },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sandbox"
+                ],
+                "summary": "Update sandbox",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.updateSandboxBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -52,6 +76,19 @@ const docTemplate = `{
                         }
                     }
                 ],
+                "responses": {}
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sandbox"
+                ],
+                "summary": "Update sandbox",
                 "responses": {}
             }
         },
@@ -179,6 +216,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.updateSandboxBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

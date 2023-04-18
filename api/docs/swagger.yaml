@@ -24,6 +24,15 @@ definitions:
       username:
         type: string
     type: object
+  controller.updateSandboxBody:
+    properties:
+      code:
+        type: string
+      language:
+        type: string
+      name:
+        type: string
+    type: object
 host: localhost:8082
 info:
   contact: {}
@@ -32,6 +41,15 @@ info:
   version: "1.0"
 paths:
   /api/sandbox/:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Update sandbox
+      tags:
+      - Sandbox
     get:
       consumes:
       - application/json
@@ -55,6 +73,22 @@ paths:
       - application/json
       responses: {}
       summary: Create sandbox
+      tags:
+      - Sandbox
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.updateSandboxBody'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update sandbox
       tags:
       - Sandbox
   /api/sign-in/:
