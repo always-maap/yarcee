@@ -6,12 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @Summary      User auth details
-// @Tags         User
-// @Accept       json
-// @Produce      json
+// @Summary  User auth details
+// @Tags     User
+// @Accept   json
+// @Produce  json
 // @Security Bearer
-// @Router       /api/user/ [get]
+// @Router   /api/user/ [get]
 func RetrieveUserController(c *fiber.Ctx) error {
 	user, err := helper.RetrieveUser(c.UserContext())
 

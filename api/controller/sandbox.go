@@ -9,11 +9,12 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// @Summary      Get user sandboxes
-// @Tags         Sandbox
-// @Accept       json
-// @Produce      json
-// @Router       /api/sandbox/ [get]
+// @Summary  Get user sandboxes
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Security Bearer
+// @Router   /api/sandbox/ [get]
 func GetUserSandboxes(c *fiber.Ctx) error {
 	user, err := helper.RetrieveUser(c.UserContext())
 
@@ -31,7 +32,25 @@ func GetUserSandboxes(c *fiber.Ctx) error {
 		"message": "success",
 		"data":    sandboxes,
 	})
+}
 
+// @Summary  Get sandbox
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Param    id path int true "id"
+// @Security Bearer
+// @Router   /api/sandbox/{id} [get]
+func GetSandbox(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	var sandbox model.Sandbox
+	database.DB.First(&sandbox, id)
+
+	return c.JSON(fiber.Map{
+		"message": "success",
+		"data":    sandbox,
+	})
 }
 
 type createSandboxBody struct {
@@ -40,12 +59,13 @@ type createSandboxBody struct {
 	Code     string `json:"code"`
 }
 
-// @Summary      Create sandbox
-// @Tags         Sandbox
-// @Accept       json
-// @Produce      json
-// @Param request body createSandboxBody true "query params"
-// @Router       /api/sandbox/ [post]
+// @Summary  Create sandbox
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Param    request body createSandboxBody true "query params"
+// @Security Bearer
+// @Router   /api/sandbox/ [post]
 func CreateSandbox(c *fiber.Ctx) error {
 	var data = new(createSandboxBody)
 
@@ -80,12 +100,14 @@ type updateSandboxBody struct {
 	Code     string `json:"code"`
 }
 
-// @Summary      Update sandbox
-// @Tags         Sandbox
-// @Accept       json
-// @Produce      json
-// @Param request body updateSandboxBody true "query params"
-// @Router       /api/sandbox/ [put]
+// @Summary  Update sandbox
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Param    id      path int               true "id"
+// @Param    request body updateSandboxBody true "query params"
+// @Security Bearer
+// @Router   /api/sandbox/{id} [put]
 func UpdateSandbox(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var data = new(updateSandboxBody)
@@ -103,11 +125,13 @@ func UpdateSandbox(c *fiber.Ctx) error {
 	})
 }
 
-// @Summary      Update sandbox
-// @Tags         Sandbox
-// @Accept       json
-// @Produce      json
-// @Router       /api/sandbox/ [delete]
+// @Summary  Delete sandbox
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Param    id path int true "id"
+// @Security Bearer
+// @Router   /api/sandbox/ [delete]
 func DeleteSandbox(c *fiber.Ctx) error {
 	id := c.Params("id")
 	database.DB.Delete(&model.Sandbox{}, id)

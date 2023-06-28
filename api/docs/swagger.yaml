@@ -44,10 +44,18 @@ paths:
     delete:
       consumes:
       - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses: {}
-      summary: Update sandbox
+      security:
+      - Bearer: []
+      summary: Delete sandbox
       tags:
       - Sandbox
     get:
@@ -56,6 +64,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - Bearer: []
       summary: Get user sandboxes
       tags:
       - Sandbox
@@ -72,13 +82,38 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - Bearer: []
       summary: Create sandbox
+      tags:
+      - Sandbox
+  /api/sandbox/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Get sandbox
       tags:
       - Sandbox
     put:
       consumes:
       - application/json
       parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: query params
         in: body
         name: request
@@ -88,6 +123,8 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - Bearer: []
       summary: Update sandbox
       tags:
       - Sandbox

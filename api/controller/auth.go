@@ -26,12 +26,12 @@ type signUpBody struct {
 	Password string `json:"password"`
 }
 
-// @Summary      Sign up
-// @Tags         Auth
-// @Accept       json
-// @Produce      json
-// @Param request body signUpBody true "query params"
-// @Router       /api/sign-up/ [post]
+// @Summary Sign up
+// @Tags    Auth
+// @Accept  json
+// @Produce json
+// @Param   request body signUpBody true "query params"
+// @Router  /api/sign-up/ [post]
 func SignUpController(c *fiber.Ctx) error {
 	var data = new(signUpBody)
 
@@ -57,12 +57,12 @@ type signInBody struct {
 	Password string `json:"password"`
 }
 
-// @Summary      Sign in
-// @Tags         Auth
-// @Accept       json
-// @Produce      json
-// @Param request body signInBody true "query params"
-// @Router       /api/sign-in/ [post]
+// @Summary Sign in
+// @Tags    Auth
+// @Accept  json
+// @Produce json
+// @Param   request body signInBody true "query params"
+// @Router  /api/sign-in/ [post]
 func SignInController(c *fiber.Ctx) error {
 	var data = new(signInBody)
 
