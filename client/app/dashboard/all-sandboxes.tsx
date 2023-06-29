@@ -1,13 +1,14 @@
 'use client';
 
 import { deleteSandbox } from '@/api/sandbox/delete-sandbox';
-import { useSandboxes } from '@/hooks/useSandbox';
+import { useAllSandboxes } from '@/hooks/useAllSandboxes';
+import Link from 'next/link';
 import { mutate } from 'swr';
 import { TEMPLATES } from './constants';
 import ProjectCard from './project-card';
 
 export default function AllSandboxes() {
-  const { sandboxes, isLoading } = useSandboxes();
+  const { sandboxes, isLoading } = useAllSandboxes();
 
   if (isLoading || !sandboxes) {
     return <div>loading...</div>;
@@ -26,7 +27,7 @@ export default function AllSandboxes() {
         return (
           <li key={sandbox.id}>
             <ProjectCard
-              name={sandbox.name}
+              name={<Link href={`/edit/${sandbox.id}`}>{sandbox.name}</Link>}
               icon={icon}
               actions={<button onClick={() => onDelete(String(sandbox.id))}>delete</button>}
             />

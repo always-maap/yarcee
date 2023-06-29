@@ -16,7 +16,7 @@ export default function Header() {
     <header className="border-b border-b-neutral-600 py-4" style={{ height: 'var(--nav-height)' }}>
       <Container>
         <div className="flex justify-between items-center">
-          <Link href="/">
+          <Link href="/dashboard">
             <YARCEE />
           </Link>
           <button className="text-xs text-neutral-400" onClick={onSignOut}>

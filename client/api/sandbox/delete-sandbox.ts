@@ -1,9 +1,8 @@
 import Cookies from 'js-cookie';
+import { z } from 'zod';
 import { SANDBOX } from '../constants';
 
-type DeleteSandboxResp = {
-  message: string;
-};
+const ZDeleteSandboxResp = z.object({ message: z.string() });
 
 export async function deleteSandbox({ id }: { id: string }) {
   const token = Cookies.get('jwt-token');
@@ -11,7 +10,7 @@ export async function deleteSandbox({ id }: { id: string }) {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
-  const data: DeleteSandboxResp = await resp.json();
+  const data = ZDeleteSandboxResp.parse(await resp.json());
   if (!resp.ok) {
     return undefined;
   }

@@ -1,11 +1,11 @@
-import { getAllSandboxes } from '@/api/sandbox/get-sandbox';
+import { getAllSandboxes, getSandbox } from '@/api/sandbox/get-sandbox';
 import useSWR from 'swr';
 
-export function useSandboxes() {
-  const { data, error, isLoading } = useSWR(`/all-sandboxes`, getAllSandboxes);
+export function useSandbox(id: string) {
+  const { data, error, isLoading } = useSWR(`/sandbox/${id}`, () => getSandbox(id));
 
   return {
-    sandboxes: data,
+    sandbox: data,
     isLoading,
     isError: error,
   };

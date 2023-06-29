@@ -1,20 +1,16 @@
+import { ZUser } from '@/models/user';
 import Cookies from 'js-cookie';
+import { z } from 'zod';
 import { USER } from '../constants';
 
-type UserResp =
-  | {
-      id: string;
-      name: string;
-      username: string;
-    }
-  | undefined;
+const ZUserResp = z.union([ZUser, z.undefined()]);
 
 export async function retrieveUser() {
   const token = Cookies.get('jwt-token');
   const resp = await fetch(USER, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const data: UserResp = await resp.json();
+  const data = ZUserResp.parse(await resp.json());
 
   if (!data?.id) {
     return undefined;
