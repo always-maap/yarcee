@@ -157,6 +157,44 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/sandbox/{id}/execute": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sandbox"
+                ],
+                "summary": "Update sandbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.executeSandboxBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/api/sign-in/": {
             "post": {
                 "consumes": [
@@ -256,6 +294,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.executeSandboxBody": {
+            "type": "object",
+            "properties": {
+                "code": {
                     "type": "string"
                 }
             }

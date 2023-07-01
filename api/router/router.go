@@ -10,10 +10,9 @@ import (
 
 func Setup(app *fiber.App) {
 	app.Get("/swagger/*", swagger.HandlerDefault)
+	app.Get("/health_check", controller.HealthController)
 
 	api := app.Group("/api")
-
-	app.Get("/health_check", controller.HealthController)
 
 	AuthSetup(api)
 	SandboxSetup(api)

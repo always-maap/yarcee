@@ -1,11 +1,16 @@
 package controller
 
 import (
+	"api/broker"
 	"api/database"
 	"api/helper"
 	"api/model"
+	"context"
+	"encoding/json"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"gorm.io/gorm/clause"
 )
 
@@ -139,4 +144,86 @@ func DeleteSandbox(c *fiber.Ctx) error {
 	return c.JSON(&fiber.Map{
 		"message": "success",
 	})
+}
+
+type executeSandboxBody struct {
+	Code string `json:"code"`
+}
+
+type sandboxJob struct {
+	ID       uint   `json:"id"`
+	Code     string `json:"code"`
+	Language string `json:"language"`
+}
+
+// @Summary  Update sandbox
+// @Tags     Sandbox
+// @Accept   json
+// @Produce  json
+// @Param    id      path int               true "id"
+// @Param    request body executeSandboxBody true "query params"
+// @Security Bearer
+// @Router   /api/sandbox/{id}/execute [post]
+func ExecuteSandbox(c *fiber.Ctx) error {
+	id := c.Params("id")
+	data := new(executeSandboxBody)
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	var existingSandbox model.Sandbox
+	if err := database.DB.First(&existingSandbox, id).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(&fiber.Map{
+			"message": "Sandbox not found",
+		})
+	}
+
+	if data.Code != existingSandbox.Code {
+		existingSandbox.Code = data.Code
+
+		if err := database.DB.Save(&existingSandbox).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
+				"message": "Failed to update sandbox",
+			})
+		}
+	}
+
+	sandboxJob := &sandboxJob{
+		ID:       existingSandbox.Id,
+		Code:     existingSandbox.Code,
+		Language: existingSandbox.Language,
+	}
+
+	sandboxJobJson, err := json.Marshal(sandboxJob)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
+			"message": "Failed to marshal message",
+		})
+	}
+
+	publishSandboxJob("sandbox_job_ex", "sandbox_job_rk", string(sandboxJobJson))
+
+	return c.JSON(&fiber.Map{
+		"message": "success",
+		"data":    existingSandbox,
+	})
+}
+
+func publishSandboxJob(exchange, routingKey, body string) error {
+	ch := broker.GetChannel()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err := ch.PublishWithContext(ctx,
+		exchange,   // exchange
+		routingKey, // routing key
+		false,      // mandatory
+		false,      // immediate
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(body),
+		},
+	)
+	return err
 }

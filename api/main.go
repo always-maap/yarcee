@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/broker"
 	"api/database"
 	_ "api/docs"
 	"api/router"
@@ -34,6 +35,10 @@ func main() {
 	app.Use(cors.New())
 
 	router.Setup(app)
+
+	if err := broker.Connect(); err != nil {
+		log.Fatal(err)
+	}
 
 	app.Listen(":8082")
 }

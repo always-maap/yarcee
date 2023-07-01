@@ -8,6 +8,11 @@ definitions:
       name:
         type: string
     type: object
+  controller.executeSandboxBody:
+    properties:
+      code:
+        type: string
+    type: object
   controller.signInBody:
     properties:
       password:
@@ -120,6 +125,30 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/controller.updateSandboxBody'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Update sandbox
+      tags:
+      - Sandbox
+  /api/sandbox/{id}/execute:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.executeSandboxBody'
       produces:
       - application/json
       responses: {}
