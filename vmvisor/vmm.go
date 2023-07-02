@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"net"
+	"os"
 	"os/exec"
 	"time"
 
@@ -14,13 +16,27 @@ import (
 )
 
 type runningFirecracker struct {
+	vmmCtx    context.Context
 	vmmCancel context.CancelFunc
+	vmmID     string
+	machine   *firecracker.Machine
 	ip        net.IP
 }
 
-func createAndStartVmm(ctx context.Context) (*runningFirecracker, error) {
+func copy(src string, dst string) error {
+	data, err := ioutil.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(dst, data, 0644)
+	return err
+}
+
+func createAndStartVM(ctx context.Context) (*runningFirecracker, error) {
 	// create vmmId with uuid
 	vmmId := uuid.New().String()
+
+	copy("../frontline/build/rootfs.ext4", "/tmp/rootfs-"+vmmId+".ext4")
 
 	firecrackerCfg, err := getFirecrackerConfig(vmmId)
 
@@ -64,6 +80,9 @@ func createAndStartVmm(ctx context.Context) (*runningFirecracker, error) {
 
 	return &runningFirecracker{
 		vmmCancel: vmmCancel,
+		vmmCtx:    vmmCtx,
+		vmmID:     vmmId,
+		machine:   machine,
 		ip:        machine.Cfg.NetworkInterfaces[0].StaticConfiguration.IPConfiguration.IPAddr.IP,
 	}, nil
 }
@@ -94,5 +113,18 @@ func waitForVMToBoot(ctx context.Context, ip net.IP) error {
 			time.Sleep(time.Second)
 		}
 
+	}
+}
+
+func (vm runningFirecracker) shutDown() {
+	log.WithField("ip", vm.ip).Info("stopping")
+	vm.machine.StopVMM()
+	err := os.Remove(vm.machine.Cfg.SocketPath)
+	if err != nil {
+		log.WithError(err).Error("Failed to delete firecracker socket")
+	}
+	err = os.Remove("/tmp/rootfs-" + vm.vmmID + ".ext4")
+	if err != nil {
+		log.WithError(err).Error("Failed to delete firecracker rootfs")
 	}
 }

@@ -5,11 +5,9 @@ mount rootfs.ext4 /tmp/my-rootfs
 
 docker run -i --rm \
     -v /tmp/my-rootfs:/my-rootfs \
-    -v "$(pwd)/fire:/usr/local/bin/fire" \
-    -v "$(pwd)/openrc.sh:/etc/init.d/fire" \
+    -v "$(pwd)/../bin/frontline:/usr/local/bin/frontline" \
+    -v "$(pwd)/openrc.sh:/etc/init.d/frontline" \
     --net=host \
     alpine sh < setup-alpine.sh
 
 umount /tmp/my-rootfs
-
-# rootfs available under `rootfs.ext4`

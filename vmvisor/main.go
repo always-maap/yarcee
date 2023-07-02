@@ -1,13 +1,12 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 
 	logrus "github.com/sirupsen/logrus"
 )
 
-type runningVM struct {
-}
 type sandboxJob struct {
 	ID       uint   `json:"id"`
 	Code     string `json:"code"`
@@ -19,13 +18,18 @@ var (
 )
 
 func main() {
-	//ctx := context.Background()
-	//vmmCtx, vmmCancel := context.WithCancel(ctx)
-	//defer vmmCancel()
+	//deleteVMMSockets()
+	ctx := context.Background()
+	vmmCtx, vmmCancel := context.WithCancel(ctx)
+	defer vmmCancel()
 
 	logrus.SetReportCaller(true)
 
-	//createAndStartVmm(vmmCtx)
+	vm, err := createAndStartVM(vmmCtx)
+	if err != nil {
+		panic("failed to run vm")
+	}
+	logrus.Info(vm.ip)
 
 	q = newJobQueue("amqp://guest:guest@localhost:5672/")
 	defer q.conn.Close()
@@ -42,6 +46,7 @@ func main() {
 			}
 
 			logrus.Info("Received a job ", job)
+			job.run(ctx, *vm)
 		}
 	}()
 

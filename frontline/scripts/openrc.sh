@@ -1,11 +1,11 @@
 #!/sbin/openrc-run
 
 name=$RC_SVCNAME
-description="firerunner agent"
+description="frontline api"
 supervisor="supervise-daemon"
-command="/usr/local/bin/fire"
+command="/usr/local/bin/frontline"
 pidfile="/run/fire.pid"
-command_user="firerunner:firerunner"
+command_user="frontlineApi:frontlineApi"
 
 depend() {
 	after net
