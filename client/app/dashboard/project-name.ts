@@ -5,6 +5,6 @@ const config: Config = {
   separator: '-',
 };
 
-export function projectName() {
+export function generateUniqueProjectName() {
   return uniqueNamesGenerator(config); // continuous-gray-dragonfly
 }

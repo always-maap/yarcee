@@ -8,6 +8,7 @@ import { useCallback, useRef } from 'react';
 import { useSandbox } from '@/hooks/useSandbox';
 import { updateSandbox } from '@/api/sandbox/update-sandbox';
 import { mutate } from 'swr';
+import { executeSandbox } from '@/api/sandbox/execute-sandbox';
 
 type Props = {
   params: { id: string };
@@ -25,8 +26,10 @@ export default function ProjectId({ params }: Props) {
     return 'loading...';
   }
 
-  function onRun() {
+  async function onRun() {
     console.log(editorValue.current);
+    const resp = await executeSandbox({ id: params.id, code: editorValue.current });
+    console.log(resp);
   }
 
   async function onUpdateTitle(newTitle: string) {
@@ -65,14 +68,16 @@ export default function ProjectId({ params }: Props) {
                   Run
                 </button>
               </div>
+              <div className="whitespace-pre-wrap">{sandbox?.stdout}</div>
             </Panel>
             <div className="h-1">
               <ResizeHandle />
             </div>
             <Panel className="px-4 bg-black rounded">
               <div className="flex justify-between items-center my-2">
-                <span className="text-neutral-400 text-xs">&gt;_ STDOUT</span>
+                <span className="text-neutral-400 text-xs">&gt;_ STDERR</span>
               </div>
+              {sandbox?.stderr}
             </Panel>
           </PanelGroup>
         </Panel>

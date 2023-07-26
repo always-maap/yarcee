@@ -1,11 +1,16 @@
 import { z } from 'zod';
 
 export const ZSandbox = z.object({
-  code: z.string(),
-  createdAt: z.string(),
   id: z.number(),
-  language: z.string(),
   name: z.string(),
+  language: z.string(),
+  code: z.string(),
+  status: z.string(),
+  stdout: z.string(),
+  stderr: z.string(),
+  execDuration: z.number(),
+  execMemUse: z.number(),
+  createdAt: z.string(),
   updatedAt: z.string(),
   userRefer: z.number(),
 });
