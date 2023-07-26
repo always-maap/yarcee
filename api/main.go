@@ -2,9 +2,12 @@ package main
 
 import (
 	"api/broker"
+	"api/controller"
 	"api/database"
 	_ "api/docs"
 	"api/router"
+	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -39,6 +42,19 @@ func main() {
 	if err := broker.Connect(); err != nil {
 		log.Fatal(err)
 	}
+
+	go func() {
+		for d := range broker.GetSandboxStatusJobsChan() {
+			var jobStatus controller.JobStatus
+			fmt.Println(string(d.Body))
+			err := json.Unmarshal([]byte(d.Body), &jobStatus)
+			if err != nil {
+				fmt.Println("Received invalid job")
+				continue
+			}
+			controller.SandboxJobStatusHandler(jobStatus)
+		}
+	}()
 
 	app.Listen(":8082")
 }

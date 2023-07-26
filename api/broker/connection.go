@@ -24,6 +24,21 @@ func GetChannel() *amqp.Channel {
 	return ch
 }
 
+func GetSandboxStatusJobsChan() <-chan amqp.Delivery {
+	jobs, err := ch.Consume(
+		"sandbox_status_queue", // queue
+		"",                     // consumer
+		true,                   // auto-ack
+		false,                  // exclusive
+		false,                  // no-local
+		false,                  // no-wait
+		nil,                    // args
+	)
+	failOnError(err, "Failed to register a consumer")
+
+	return jobs
+}
+
 func Connect() error {
 	rabbitMQURL := os.Getenv("RABBITMQ_URL")
 
@@ -55,7 +70,26 @@ func Connect() error {
 		false,            // no-wait
 		nil,              // arguments
 	)
-	failOnError(err, "Failed to declare an exchange")
+	failOnError(err, "Failed to declare sandbox job exchange")
+
+	sandboxQ, err := ch.QueueDeclare(
+		"sandbox_status_queue", // name
+		true,                   // durable
+		false,                  // delete when unused
+		false,                  // exclusive
+		false,                  // no-wait
+		nil,                    // arguments
+	)
+	failOnError(err, "Failed to declare a queue")
+
+	err = ch.QueueBind(
+		sandboxQ.Name,           // queue name
+		"sandbox_job_status_rk", // routing key
+		"sandbox_job_ex",        // exchange
+		false,
+		nil,
+	)
+	failOnError(err, "Failed to bind a queue")
 
 	return nil
 }
