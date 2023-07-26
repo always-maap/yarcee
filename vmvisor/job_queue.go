@@ -1,7 +1,12 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+
 	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -12,14 +17,25 @@ func failOnError(err error, msg string) {
 	}
 }
 
-type jobQueue struct {
+type jobChan struct {
 	ch    *amqp.Channel
 	conn  *amqp.Connection
 	jobsQ amqp.Queue
 	jobs  <-chan amqp.Delivery
 }
 
-func newJobQueue(amqpURL string) jobQueue {
+type jobStatus struct {
+	ID           uint   `json:"id"`
+	Status       string `json:"status"`
+	Message      string `json:"message"`
+	Error        string `json:"error"`
+	StdErr       string `json:"stderr"`
+	StdOut       string `json:"stdout"`
+	ExecDuration int    `json:"exec_duration"`
+	MemUsage     int64  `json:"mem_usage"`
+}
+
+func newJobQueue(amqpURL string) jobChan {
 	conn, err := amqp.Dial(amqpURL)
 	failOnError(err, "Failed to connect to RabbitMQ")
 
@@ -35,7 +51,7 @@ func newJobQueue(amqpURL string) jobQueue {
 		false,            // no-wait
 		nil,              // arguments
 	)
-	failOnError(err, "Failed to declare an exchange")
+	failOnError(err, "Failed to declare sandbox job exchange")
 
 	sandboxQ, err := ch.QueueDeclare(
 		"sandbox_queue", // name
@@ -67,11 +83,79 @@ func newJobQueue(amqpURL string) jobQueue {
 	)
 	failOnError(err, "Failed to register a consumer")
 
-	return jobQueue{
+	return jobChan{
 		ch,
 		conn,
 		sandboxQ,
 		jobs,
 	}
+}
 
+func (q jobChan) setjobStatus(ctx context.Context, job sandboxJob, status string, res sandboxExecRes) error {
+	log.WithField("status", status).Info("Set job status")
+	jobStatus := &jobStatus{
+		ID:      job.ID,
+		Status:  status,
+		Message: res.Message,
+		StdErr:  "",
+		StdOut:  "",
+		//Error:   res.Error,
+	}
+	fmt.Printf("%+v", jobStatus)
+	b, err := json.Marshal(jobStatus)
+	if err != nil {
+		return err
+	}
+	err = q.ch.Publish(
+		"sandbox_job_ex",         // exchange
+		"sandbox_jobs_status_rk", // routing key
+		false,                    // mandatory
+		false,                    // immediate
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        b,
+		})
+	return err
+}
+
+func (q jobChan) setJobReceived(ctx context.Context, job sandboxJob) error {
+	return q.setjobStatus(ctx, job, "received", sandboxExecRes{})
+}
+
+func (q jobChan) setJobRunning(ctx context.Context, job sandboxJob) error {
+	return q.setjobStatus(ctx, job, "running", sandboxExecRes{})
+}
+
+func (q jobChan) setJobFailed(ctx context.Context, job sandboxJob, res sandboxExecRes) error {
+	return q.setjobStatus(ctx, job, "failed", res)
+}
+
+func (q jobChan) setJobResult(ctx context.Context, job sandboxJob, res sandboxExecRes) error {
+	jobStatus := &jobStatus{
+		ID:           job.ID,
+		Status:       "done",
+		Message:      res.Message,
+		StdErr:       res.StdErr,
+		StdOut:       res.StdOut,
+		ExecDuration: res.ExecDuration,
+		MemUsage:     res.MemUsage,
+		//Error:        res.Error,
+	}
+	fmt.Printf("%+v", jobStatus)
+	log.WithField("jobStatus", jobStatus).Info("Set job result")
+
+	b, err := json.Marshal(jobStatus)
+	if err != nil {
+		return err
+	}
+	err = q.ch.Publish(
+		"sandbox_job_ex",        // exchange
+		"sandbox_job_status_rk", // routing key
+		false,                   // mandatory
+		false,                   // immediate
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        b,
+		})
+	return err
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	logrus "github.com/sirupsen/logrus"
 )
@@ -14,7 +15,7 @@ type sandboxJob struct {
 }
 
 var (
-	q jobQueue
+	job_q jobChan
 )
 
 func main() {
@@ -31,14 +32,15 @@ func main() {
 	}
 	logrus.Info(vm.ip)
 
-	q = newJobQueue("amqp://guest:guest@localhost:5672/")
-	defer q.conn.Close()
-	defer q.ch.Close()
+	job_q = newJobQueue("amqp://guest:guest@localhost:5672/")
+	defer job_q.conn.Close()
+	defer job_q.ch.Close()
 
 	forever := make(chan bool)
 	go func() {
-		for d := range q.jobs {
+		for d := range job_q.jobs {
 			var job sandboxJob
+			fmt.Println(string(d.Body))
 			err := json.Unmarshal([]byte(d.Body), &job)
 			if err != nil {
 				logrus.WithError(err).Error("Received invalid job")

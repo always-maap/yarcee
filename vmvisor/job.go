@@ -15,12 +15,12 @@ type sandboxExecReq struct {
 	Code     string `json:"code"`
 }
 
-type agentExecRes struct {
-	Message string `json:"message"`
-	StdErr  string `json:"stderr"`
-	StdOut  string `json:"stdout"`
-	//ExecDuration int    `json:"exec_duration"`
-	//MemUsage     int64  `json:"mem_usage"`
+type sandboxExecRes struct {
+	Message      string `json:"message"`
+	StdErr       string `json:"stderr"`
+	StdOut       string `json:"stdout"`
+	ExecDuration int    `json:"exec_duration"`
+	MemUsage     int64  `json:"mem_usage"`
 }
 
 func (job sandboxJob) run(ctx context.Context, vm runningFirecracker) {
@@ -51,21 +51,26 @@ func (job sandboxJob) run(ctx context.Context, vm runningFirecracker) {
 	}
 
 	var httpRes *http.Response
-	var agentRes agentExecRes
+	var sandboxRes sandboxExecRes
 
 	httpRes, err = http.Post("http://"+vm.ip.String()+":8080/exec", "application/json", bytes.NewBuffer(reqJSON))
 	if err != nil {
 		log.WithError(err).Error("Failed to request execution to agent")
 		return
 	}
-	json.NewDecoder(httpRes.Body).Decode(&agentRes)
-	log.WithField("result", agentRes).Info("Job execution finished")
+	json.NewDecoder(httpRes.Body).Decode(&sandboxRes)
+	log.WithField("result", sandboxRes).Info("Job execution finished")
 	if httpRes.StatusCode != 200 {
 		log.WithFields(log.Fields{
 			"httpRes":  httpRes,
-			"agentRes": agentRes,
+			"agentRes": sandboxRes,
 			"reqJSON":  string(reqJSON),
 		}).Error("Failed to compile and run code")
 		return
+	}
+
+	err = job_q.setJobResult(ctx, job, sandboxRes)
+	if err != nil {
+		job_q.setJobFailed(ctx, job, sandboxRes)
 	}
 }
