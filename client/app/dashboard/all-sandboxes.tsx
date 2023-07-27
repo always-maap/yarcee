@@ -22,7 +22,7 @@ export default function AllSandboxes() {
   return (
     <ul className="grid grid-cols-[repeat(auto-fill,_minmax(260px,_1fr))] auto-rows-[minmax(154px,_1fr)] gap-4">
       {sandboxes.map((sandbox) => {
-        const icon = TEMPLATES.find((t) => t.name === sandbox.language)?.icon;
+        const icon = TEMPLATES.find((t) => t.abbr === sandbox.language)?.icon;
 
         return (
           <li key={sandbox.id}>

@@ -10,4 +10,25 @@ export const TEMPLATES = [
     code: 'print("hi")',
     abbr: 'py',
   },
+  {
+    name: 'C',
+    icon: <Image width={20} height={20} src="/logo/c.png" alt="c-logo" />,
+    code: `#include <stdio.h>
+    int main() {
+       printf("Hello, World!");
+       return 0;
+    }`,
+    abbr: 'cpp',
+  },
+  {
+    name: 'C++',
+    icon: <Image width={20} height={20} src="/logo/cpp.png" alt="cpp-logo" />,
+    code: `#include <iostream>
+
+  int main() {
+      std::cout << "Hello World!";
+      return 0;
+  }`,
+    abbr: 'cpp',
+  },
 ];
