@@ -96,7 +96,7 @@ func waitForVMToBoot(ctx context.Context, ip net.IP) error {
 			// Timeout
 			return ctx.Err()
 		default:
-			res, err := req.Get("http://" + ip.String() + ":8080/health")
+			res, err := req.Get("http://" + ip.String() + ":8080/health_check")
 			if err != nil {
 				log.WithError(err).Info("VM not ready yet")
 				time.Sleep(time.Second)

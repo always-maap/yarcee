@@ -15,8 +15,6 @@ func fillVMPool(ctx context.Context, WarmVMs chan<- runningFirecracker) {
 		default:
 			vm, err := createAndStartVM(ctx)
 			if err != nil {
-				log.Error("failed to create VMM")
-				time.Sleep(time.Second)
 				continue
 			}
 
@@ -32,6 +30,8 @@ func fillVMPool(ctx context.Context, WarmVMs chan<- runningFirecracker) {
 				continue
 			}
 
+			// Add the new microVM to the pool.
+			// If the pool is full, this line will block until a slot is available.
 			WarmVMs <- *vm
 		}
 	}

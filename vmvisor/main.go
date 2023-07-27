@@ -19,18 +19,15 @@ var (
 )
 
 func main() {
-	//deleteVMMSockets()
-	ctx := context.Background()
-	vmmCtx, vmmCancel := context.WithCancel(ctx)
+	defer deleteVMMSockets()
+	vmmCtx, vmmCancel := context.WithCancel(context.Background())
 	defer vmmCancel()
 
-	logrus.SetReportCaller(true)
+	warmVMs := make(chan runningFirecracker, 10)
 
-	vm, err := createAndStartVM(vmmCtx)
-	if err != nil {
-		panic("failed to run vm")
-	}
-	logrus.Info(vm.ip)
+	go fillVMPool(vmmCtx, warmVMs)
+
+	logrus.SetReportCaller(true)
 
 	job_q = newJobQueue("amqp://guest:guest@localhost:5672/")
 	defer job_q.conn.Close()
@@ -48,7 +45,7 @@ func main() {
 			}
 
 			logrus.Info("Received a job ", job)
-			job.run(ctx, *vm)
+			job.run(vmmCtx, warmVMs)
 		}
 	}()
 

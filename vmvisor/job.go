@@ -23,8 +23,10 @@ type sandboxExecRes struct {
 	MemUsage     int64  `json:"mem_usage"`
 }
 
-func (job sandboxJob) run(ctx context.Context, vm runningFirecracker) {
+func (job sandboxJob) run(ctx context.Context, warmVMs <-chan runningFirecracker) {
 	log.WithField("job", job).Info("Handling job")
+
+	vm := <-warmVMs
 
 	// Defer cleanup of VM and VMM
 	go func() {
