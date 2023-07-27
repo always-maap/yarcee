@@ -13,17 +13,17 @@ type ExecReq struct {
 	Code     string `json:"code"`
 }
 
-func execController(c *fiber.Ctx) error {
+func execController(ctx *fiber.Ctx) error {
 	execReq := new(ExecReq)
 
-	if err := c.BodyParser(execReq); err != nil {
+	if err := ctx.BodyParser(execReq); err != nil {
 		return err
 	}
 
 	f, err := os.Create(fmt.Sprintf("/tmp/%d", execReq.ID))
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Internal Server Error",
 		})
 	}
@@ -33,18 +33,22 @@ func execController(c *fiber.Ctx) error {
 	_, err = f.WriteString(execReq.Code)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Internal Server Error",
 		})
 	}
 
 	switch execReq.Language {
 	case "py":
-		return py(c, execReq)
+		return py(ctx, execReq)
 	case "node":
-		return node(c, execReq)
+		return node(ctx, execReq)
+	case "c":
+		return cHandler(ctx, execReq)
+	case "cpp":
+		return cppHandler(ctx, execReq)
 	default:
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Language not supported",
 		})
 	}

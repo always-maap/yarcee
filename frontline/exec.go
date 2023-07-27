@@ -18,7 +18,7 @@ type ExecRes struct {
 	MemUsage     int64  `json:"mem_usage"`
 }
 
-func execCmd(c *fiber.Ctx, prog string, args ...string) error {
+func execCmd(ctx *fiber.Ctx, prog string, args ...string) error {
 	var execStdOut, execStdErr bytes.Buffer
 
 	cmd := exec.Command(prog, args...)
@@ -30,7 +30,7 @@ func execCmd(c *fiber.Ctx, prog string, args ...string) error {
 	elapsed := time.Since(start)
 
 	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON(ExecRes{
+		return ctx.Status(http.StatusBadRequest).JSON(ExecRes{
 			Message:      "Failed to exec",
 			StdOut:       execStdOut.String(),
 			StdErr:       execStdErr.String(),
@@ -39,7 +39,7 @@ func execCmd(c *fiber.Ctx, prog string, args ...string) error {
 		})
 	}
 
-	return c.Status(http.StatusOK).JSON(ExecRes{
+	return ctx.Status(http.StatusOK).JSON(ExecRes{
 		Message:      "Success",
 		StdOut:       execStdOut.String(),
 		StdErr:       execStdErr.String(),
