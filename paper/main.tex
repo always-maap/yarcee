@@ -1,0 +1,43 @@
+\input{configurations.tex}
+
+\input{information.tex} 
+
+\begin{document}
+\renewcommand{\contentsname}{فهرست مطالب}
+\renewcommand{\listfigurename}{فهرست شکل‌ها}
+\renewcommand{\listtablename}{فهرست جدول‌ها}
+\renewcommand{\bibname}{مراجع}
+
+%------------------------------------------------------------------------
+%	FRONT MATTER
+%------------------------------------------------------------------------
+\frontmatter \pagestyle{empty}
+\pagenumbering{adadi}
+
+\input{0-Front-Matter/1-first-matters.tex}
+
+\pagenumbering{harfi} \pagestyle{plain}
+%\input{0-Front-Matter/2-Abstract-Fa.tex}
+
+\tableofcontents
+\listoftables
+\listoffigures
+
+
+%------------------------------------------------------------------------
+%	MAIN MATTER
+%------------------------------------------------------------------------
+\mainmatter \pagestyle{parsaheadings}
+
+\input{1-Introduction/Introduction.tex}
+\input{2-Basic-Concepts/Basic-Concepts.tex}
+
+
+%------------------------------------------------------------------------
+%	BACK MATTER
+%------------------------------------------------------------------------
+\backmatter \pagestyle{empty} \pagenumbering{roman}
+\input{z-Back-Matter/last-matters.tex}
+
+
+\end{document}.
