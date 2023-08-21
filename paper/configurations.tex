@@ -1,7 +1,40 @@
 \documentclass[12pt,twoside]{book}
 
+\usepackage{placeins}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, shapes}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \usepackage[thesis]{parsa}
-\usepackage{xepersian}
-
+\usepackage[localise,perpagefootnote=on,computeautoilg=on]{xepersian}
 \settextfont{XB Niloofar}
+\defpersianfont\ParsaHeaderFont{IRNazanin}
+\setlatintextfont{Times New Roman}
+\setmonofont[Color={0019D4}]{Courier New}
+
+% --- Settings for xepersian
+\SepMark{-} % Changes the section heading number separator
+
+
+% Change some letters in abjad or harfi---like آ into الف
+\makeatletter
+\bidi@patchcmd{\@Abjad}{آ}{الف}
+{\typeout{Succeeded in changing `آ` into `الف`}}
+{\typeout{Failed in changing `آ` into `الف`}}
+\bidi@patchcmd{\@Abjad}{ه}{ه‍}
+{\typeout{Succeeded in changing `ه` into `ه‍`}}
+{\typeout{Failed in changing `ه` into `ه‍`}}
+\bidi@patchcmd{\@harfi}{آ}{الف}
+{\typeout{Succeeded in changing `آ` into `الف`}}
+{\typeout{Failed in changing `آ` into `الف`}}
+\bidi@patchcmd{\@harfi}{ه}{ه‍}
+{\typeout{Succeeded in changing `ه` into `ه‍`}}
+{\typeout{Failed in changing `ه` into `ه‍`}}
+\makeatother
+\PersianAlphs

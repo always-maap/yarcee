@@ -1,0 +1,19 @@
+\section{VMVisor}
+
+\begin{figure}
+    \centering
+    \caption{وضعیت اجرا کد}
+    \label{fig:job-state}
+    \begin{tikzpicture}[node distance=2cm]
+        \node (received) [startstop] {Received};
+        \node (running) [process, right of=received, xshift=2cm] {Running};
+        \node (done) [process, right of=running, xshift=2cm] {Done};
+        \node (failed_received) [process, below of=received] {Failed};
+        \node (failed_running) [process, below of=running] {Failed};
+
+        \draw [arrow] (received) -- (running);
+        \draw [arrow] (running) -- (done);
+        \draw [arrow] (received) -- (failed_received);
+        \draw [arrow] (running) -- (failed_running);
+    \end{tikzpicture}
+\end{figure}
