@@ -9,7 +9,8 @@
 
 ## Overview
 
-YARCEE(yet another remote code execution engine).
+YARCEE(yet another remote code execution engine) is a code running service that relies on
+Firecracker to spawn microVMs and execute the code over HTTP.
 
 ## Services
 
